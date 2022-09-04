@@ -1,0 +1,8 @@
+{
+  "cSpell.words": ["Chakra"],
+  "search.exclude": {
+    ".next": true,
+    "prisma": true,
+    "prisma/{seed.ts,schema.primsa}": false
+  }
+}
