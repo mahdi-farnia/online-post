@@ -4,9 +4,9 @@ import type { Post as IPost } from '@prisma/client';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface PostHook {
-  isLoading: boolean;
+  isLoaded: boolean;
   error?: any;
-  data?: IPost[] | undefined;
+  posts?: IPost[] | undefined;
 }
 
 export default function usePosts(): PostHook {
@@ -16,9 +16,9 @@ export default function usePosts(): PostHook {
     errorRetryInterval: 3_000
   });
 
-  if (error) return { isLoading: !1, error, data: [] };
+  if (error) return { isLoaded: !1, error, posts: [] };
 
-  if (!data) return { isLoading: !1 };
+  if (!data) return { isLoaded: !1 };
 
-  return { data, isLoading: !0 };
+  return { posts: data, isLoaded: !0 };
 }

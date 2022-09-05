@@ -1,30 +1,28 @@
 import {
-  VStack,
-  HStack,
   Avatar,
-  Skeleton,
   Divider,
-  Text,
+  Fade,
+  HStack,
   LinkOverlay,
-  useColorModeValue
+  Text,
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import NextImage from 'next/image';
+import NextLink from 'next/link';
 import ImageFrame from '../../../ui/ImageFrame';
 import SkeletonImage from '../../../ui/SkeletonImage';
-import NextLink from 'next/link';
-import NextImage from 'next/image';
-import styled from '@emotion/styled';
-import { usePostData, usePostIsLoading } from './PostContext';
+import { usePostData } from './PostContext';
 
 const fillParent = { w: '100%', h: '100%' };
 
 const PostContent: React.FC<{
   fullPage: boolean;
-}> = ({ fullPage }) => {
+  postId: number;
+}> = ({ fullPage, postId }) => {
   const bg = useColorModeValue('white', 'black');
-  const {
-    post: { id, image, title, username, avatar }
-  } = usePostData();
-  const isLoaded = usePostIsLoading();
+  const { id, image, title, username, avatar } = usePostData(postId);
 
   return (
     <VStack
@@ -41,17 +39,17 @@ const PostContent: React.FC<{
             <Avatar src={avatar as string | undefined} {...fillParent} onLoad={onLoad} />
           )}
         </SkeletonImage>
-        <Skeleton w="max-content" isLoaded={isLoaded} title={username || 'Loading'}>
+        <Fade in /** fake skeleton text fade animation */>
           <Text as="h1" fontWeight="semibold" fontSize="xs" noOfLines={1}>
-            {username || 'Loading Username'}
+            {username}
           </Text>
-        </Skeleton>
+        </Fade>
         <Divider orientation="vertical" />
-        <Skeleton w="max-content" isLoaded={isLoaded} title={title || 'Loading'}>
+        <Fade in /** fake skeleton text fade animation */>
           <Text as="h2" fontSize="xs" noOfLines={1}>
-            {title || 'Loading Title'}
+            {title}
           </Text>
-        </Skeleton>
+        </Fade>
       </HStack>
       <ConditionalLink id={id} fullPage={fullPage}>
         <ImageFrame frameColor={bg}>

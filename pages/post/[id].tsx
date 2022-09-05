@@ -1,18 +1,24 @@
 import { Post as IPost } from '@prisma/client';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Post from '../../components/index/Post';
+import PostCard from '../../components/index/Post';
+import PostProvider from '../../components/index/Post/PostContext';
 import prisma from '../../lib/prisma';
 
 // TODO where is nav?
-const IPost: NextPage<{ post: IPost }> = ({ post }) => {
-  return (
+// TODO create not found post page
+const Post: NextPage<{ post: IPost }> = ({ post }) => {
+  return post == null ? (
+    <p>Post Not Found</p>
+  ) : (
     <>
       <Head>
         <title>Poster | {post.title}</title>
         {post.avatar && <link rel="icon" sizes="128x128" href={post.avatar} type="image/*" />}
       </Head>
-      <Post post={post} fullPage />
+      <PostProvider posts={[post]} isLoaded>
+        <PostCard postId={0} fullPage />
+      </PostProvider>
     </>
   );
 };
@@ -29,14 +35,11 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }: Params)
     where: {
       id: parseInt(id)
     }
-  })) as IPost;
+  })) as IPost | null;
 
   return {
     props: {
-      post: {
-        ...post,
-        time: post.time.toString()
-      }
+      post: post == null ? null : { ...post, time: post.time.toString() }
     },
     revalidate: 15 // 15s
   };
@@ -53,4 +56,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default IPost;
+export default Post;

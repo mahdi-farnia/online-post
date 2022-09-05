@@ -1,10 +1,11 @@
 import { Container, SimpleGrid, useToast } from '@chakra-ui/react';
 import Post from './Post';
+import PostProvider from './Post/PostContext';
 import usePosts from '../../hooks/usePosts';
 
-// TODO complete windowing...
+// IMPROVE complete windowing...
 const Feed: React.FC = () => {
-  const { data = new Array(7), error } = usePosts();
+  const { posts = new Array(10), error, isLoaded } = usePosts();
   const toast = useToast();
 
   if (error) {
@@ -15,9 +16,11 @@ const Feed: React.FC = () => {
   return (
     <Container maxW="container.xl" pt="80px">
       <SimpleGrid minChildWidth={200} gridAutoRows="350px" spacing={2}>
-        {data.map((post, i) => (
-          <Post post={post} key={i} />
-        ))}
+        <PostProvider posts={posts} isLoaded={isLoaded}>
+          {posts.map((_, postId) => (
+            <Post postId={postId} key={postId} />
+          ))}
+        </PostProvider>
       </SimpleGrid>
     </Container>
   );

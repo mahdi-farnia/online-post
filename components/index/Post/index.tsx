@@ -1,31 +1,30 @@
-import { LinkBox, LinkBoxProps, Tag } from '@chakra-ui/react';
-import type { Post as IPost } from '@prisma/client';
-import PostProvider from './PostContext';
+import { LinkBox, LinkBoxProps } from '@chakra-ui/react';
+import PostAnnotation from './PostAnnotation';
 import PostContent from './PostContent';
+import { usePostIsLoaded } from './PostContext';
+import SkeletonPost from './SkeletonPost';
 
 interface PostProps extends LinkBoxProps {
   fullPage?: boolean;
-  post?: IPost; // lazy loading...
+  postId: number;
 }
 
-const Post: React.FC<PostProps> = ({ post, fullPage = false, ...props }) => (
-  <PostProvider post={post}>
+// TODO Make Index More Generic => <PostHeader /> <PostContent /> <PostAnnotation />
+const Post: React.FC<PostProps> = ({ postId, fullPage = false, ...props }) => {
+  const isLoaded = usePostIsLoaded();
+
+  return (
     <LinkBox height={fullPage ? '100vh' : undefined} {...props}>
-      <PostContent fullPage={fullPage} />
-      <Tag
-        colorScheme="telegram"
-        size="sm"
-        position="absolute"
-        bottom="10px"
-        opacity={0}
-        transition="opacity 0.2s ease"
-        right="10px"
-        className="time-tag"
-      >
-        {post?.time && post.time.toString()}
-      </Tag>
+      {isLoaded ? (
+        <>
+          <PostContent fullPage={fullPage} postId={postId} />
+          <PostAnnotation postId={postId} />
+        </>
+      ) : (
+        <SkeletonPost />
+      )}
     </LinkBox>
-  </PostProvider>
-);
+  );
+};
 
 export default Post;
