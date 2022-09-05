@@ -1,6 +1,6 @@
 import { Container, SimpleGrid, useToast } from '@chakra-ui/react';
-import Post from '../components/Post';
-import usePosts from '../hooks/usePosts';
+import Post from './Post';
+import usePosts from '../../hooks/usePosts';
 
 // TODO complete windowing...
 const Feed: React.FC = () => {

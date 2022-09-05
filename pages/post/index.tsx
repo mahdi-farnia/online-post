@@ -1,6 +1,12 @@
 import { NextPage } from 'next';
+import Navbar from '../../components/Navbar';
+import CreatePost from '../../components/create-post/CreatePost';
 
-// TODO complete create post
-const CreatePostPage: NextPage = () => <p>Create Your Post!</p>;
+const CreatePostPage: NextPage = () => (
+  <>
+    <Navbar />
+    <CreatePost />
+  </>
+);
 
 export default CreatePostPage;

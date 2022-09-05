@@ -1,14 +1,24 @@
-import { extendTheme, type ThemeOverride } from '@chakra-ui/react';
+import { extendTheme, StyleFunctionProps, type ThemeOverride } from '@chakra-ui/react';
 
 export const theme = extendTheme({
   styles: {
-    global: {
+    global: ({ colorMode }: StyleFunctionProps) => ({
       body: {
-        bgColor: '#f4f4f4'
+        backgroundColor: colorMode === 'dark' ? '#151615' : '#f4f4f4'
       }
+    })
+  },
+  colors: {
+    card: {
+      light: '#fff',
+      dark: '#000'
     }
   },
-  sizes: extendSize(5.5)
+  sizes: extendSize(5.5),
+  config: {
+    useSystemColorMode: true,
+    initialColorMode: 'light'
+  }
 } as ThemeOverride);
 
 function extendSize(...sizes: number[]) {

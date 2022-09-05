@@ -1,7 +1,7 @@
 import { Post as IPost } from '@prisma/client';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Post from '../../components/Post';
+import Post from '../../components/index/Post';
 import prisma from '../../lib/prisma';
 
 // TODO where is nav?
